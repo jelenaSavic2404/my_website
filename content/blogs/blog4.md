@@ -8,8 +8,8 @@ description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis mag
   sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem
   consequat tincidunt. Vivamus et sagittis tempus.
 draft: false
-image: dog2.jpg
+image: aboutme.jpg
 keywords: ""
 slug: jelena
-title: Beagle puppy
+title: About me
 ---

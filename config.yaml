@@ -81,9 +81,9 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: dog.jpg
-        subtitle: I love dogs
-        title: Dogs
+      - image: comp1.jpg
+        subtitle: Find out more 
+        title: About me
         url: blogs/jelena
      
   two:
