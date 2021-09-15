@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "http://example.org/"
+baseURL = "https://jelena-savic-portfolio.netlify.app"
 languageCode = "en-us"
 title = "Forty"
 theme = "forty"
@@ -165,7 +165,7 @@ disqusShortname = ""
     # - send a dummy email yourself to confirm your account
     # - click the confirm link in the email from www.formspree.io
     # - you're done. Happy mailing!
-    email = "jelena.savic2404@gmail.com"
+    formEmail = "jelena.savic2404@gmail.com"
 
     # Contact Section
     # You can add multiple emails, phone numbers, or addresses
