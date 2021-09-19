@@ -1,0 +1,29 @@
+---
+title: "About me"
+author: "Jelena Savic"
+date: 2020-12-01T21:13:14-05:00
+categories: ["R"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+<center>
+
+![](profile.jpg ){width=20%}
+</center>
+## Biography
+<p>
+Hi, my name is Jelena Savic and I'm a current LBS student. I was born in 1996 in Belgrade, Serbia. I graduated from [School of Electrical Engineering, University of Belgrade](https://www.etf.bg.ac.rs/en#gsc.tab=0), and started my career working in the IT industry. After a year, I decided to make a shift to the world of *Business and Finance*. **Master in Analytics and Management** seamed as an ideal option, and after extensive preparation, I was accepted to her dream school.
+
+My professional skills include:
+
+1. Programming skills in various languages (Java, Python, C++ etc.)
+2. Analytical thinking
+3. Collaborative skills
+4. Creativity
+
+After compleiting the **MAM** program, I plan to continue my career in the consulting industry. 
+</p>
+

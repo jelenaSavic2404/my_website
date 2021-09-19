@@ -8,6 +8,24 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 01 Dec 2020 21:13:14 -0500</lastBuildDate><atom:link href="https://jelena-savic-portfolio.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Session 4: Homework 2</title>
+      <link>https://jelena-savic-portfolio.netlify.app/projects/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jelena-savic-portfolio.netlify.app/projects/</guid>
+      <description>Climate change and temperature anomalies#Loading dataweather &amp;lt;- read_csv(&amp;quot;https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv&amp;quot;, skip = 1, na = &amp;quot;***&amp;quot;) #skipping the missing dataSelect the year and the twelve month variables from the weather dataset.#Select the data we needweather_data &amp;lt;- weather %&amp;gt;% select(Year, Jan:Dec)Convert the dataframe from wide to ‘long’ format.#Convert data into long format #Names of the columns Jan-Dec will become values of new column &amp;quot;Month&amp;quot;#Monthly temperature deviations stored in column &amp;quot;delta&amp;quot;tidyweather &amp;lt;- weather_data %&amp;gt;% pivot_longer(cols=c(&amp;quot;Jan&amp;quot;,&amp;quot;Feb&amp;quot;, &amp;quot;Mar&amp;quot;, &amp;quot;Apr&amp;quot;, &amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;, &amp;quot;Oct&amp;quot;, &amp;quot;Nov&amp;quot;, &amp;quot;Dec&amp;quot;), names_to=&amp;quot;Month&amp;quot;, values_to=&amp;quot;delta&amp;quot;) glimpse(tidyweather) #preview tidied dataset## Rows: 1,704## Columns: 3## $ Year &amp;lt;dbl&amp;gt; 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880, 1880~## $ Month &amp;lt;chr&amp;gt; &amp;quot;Jan&amp;quot;, &amp;quot;Feb&amp;quot;, &amp;quot;Mar&amp;quot;, &amp;quot;Apr&amp;quot;, &amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;, &amp;quot;Sep&amp;quot;, &amp;quot;~## $ delta &amp;lt;dbl&amp;gt; -0.</description>
+    </item>
+    
+    <item>
+      <title>About me</title>
+      <link>https://jelena-savic-portfolio.netlify.app/about_me/</link>
+      <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
+      
+      <guid>https://jelena-savic-portfolio.netlify.app/about_me/</guid>
+      <description>BiographyHi, my name is Jelena Savic and I’m a current LBS student. I was born in 1996 in Belgrade, Serbia. I graduated from School of Electrical Engineering, University of Belgrade, and started my career working in the IT industry. After a year, I decided to make a shift to the world of Business and Finance. Master in Analytics and Management seamed as an ideal option, and after extensive preparation, I was accepted to her dream school.</description>
+    </item>
+    
+    <item>
       <title>Hello R Markdown</title>
       <link>https://jelena-savic-portfolio.netlify.app/post/2020-12-01-r-rmarkdown/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
