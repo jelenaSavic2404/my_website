@@ -53,8 +53,10 @@ params:
         url: '#'
       - name: About me
         url: about_me
-      - name: Projects
+      - name: Biden approval margin
         url: projects
+      - name: TfL bike rentals
+        url: bikes
     menu: Menu
     subtitle: By HTML5 Up
     title: Forty
@@ -68,6 +70,10 @@ params:
 
       - image: projects_img.jpg
         subtitle: Click to find out more 
-        title: Projects
+        title: Biden approval margin
         url: projects
 
+      - image: projects_img.jpg
+        subtitle: Click to find out more 
+        title: TfL bike hiring
+        url: bikes

@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Your description">
+	<meta name="author" content="Your name">
+	<meta name="generator" content="Hugo 0.87.0" />
+	<title>Changes in bike hiring - TfL &middot; Portfolio website for Jelena Savic</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="https://jelena-savic-portfolio.netlify.app/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="https://jelena-savic-portfolio.netlify.app/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="https://jelena-savic-portfolio.netlify.app/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="https://jelena-savic-portfolio.netlify.app/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="https://jelena-savic-portfolio.netlify.app" class="logo"><strong>Forty</strong> <span>By HTML5 Up</span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="https://jelena-savic-portfolio.netlify.app">Home</a></li>
+            
+                <li><a href="https://jelena-savic-portfolio.netlify.app/about_me">About me</a></li>
+            
+                <li><a href="https://jelena-savic-portfolio.netlify.app/projects">Projects</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>Changes in bike hiring - TfL</h1>
+                            </header>
+                            
+                            
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2021-08-23T14%3A32%3A29/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20210919%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20210919T173839Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=39d12cb12a7909783dfb20b4874b6d37e88dc9408109017ff6453596a88af5b7&amp;X-Amz-SignedHeaders=host]
+##   Date: 2021-09-19 17:42
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 173 kB
+## &lt;ON DISK&gt;  C:\Users\JELENA~1.SAV\AppData\Local\Temp\Rtmpg9LRPq\file3818f9e494d.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))</code></pre>
+<pre class="r"><code># Calculate monthly bike change 
+monthly_expected_rentals &lt;- bike %&gt;% 
+  filter(year %in% c(2016,2017,2018,2019)) %&gt;%  
+  group_by(month) %&gt;% 
+  summarize(expected_rentals=mean(bikes_hired))
+
+# Calculate actual monthly rentals mean
+monthly_actual_rentals &lt;- bike %&gt;% 
+  filter(year %in% c(2016,2017,2018,2019,2020,2021)) %&gt;%  
+  group_by(year, month) %&gt;% 
+  summarize(actual_rentals=mean(bikes_hired))
+
+#joining expected and actual rentals in single dataframe
+df &lt;- inner_join(monthly_expected_rentals, monthly_actual_rentals) %&gt;% 
+  #calculating up and down values - positive difference between actual and expected rentals or 0
+  mutate(up = case_when((actual_rentals - expected_rentals) &gt; 0 
+                        ~ actual_rentals - expected_rentals, 
+                        (actual_rentals - expected_rentals) &lt;= 0 
+                        ~ 0), 
+         down = case_when((expected_rentals - actual_rentals) &gt; 0 
+                        ~ expected_rentals - actual_rentals, 
+                        (expected_rentals - actual_rentals) &lt;= 0 
+                        ~ 0))
+# Create the graph
+ggplot(df, aes(month, expected_rentals, group=1)) +
+  geom_line(color=&quot;blue&quot;) +
+  geom_line(aes(month, actual_rentals)) +
+  facet_wrap(~year) +
+  theme(axis.text.x = element_text(size = 5)) +
+  ylim(15000, 45000) +
+  
+  #Filling of graph - ribbons
+  geom_ribbon(aes(ymin=expected_rentals,ymax=expected_rentals+up), 
+              fill=&quot;#7DCD85&quot;,
+              alpha=0.4) +
+  geom_ribbon(aes(ymin=expected_rentals,
+                  ymax=expected_rentals-down), 
+              fill=&quot;#CB454A&quot;,
+              alpha=0.4) +
+  
+  theme_minimal() + 
+  
+  #Label the graph 
+  labs(
+    title = &quot;Monthly changes in TfL bik rentals&quot;,
+    subtitle = &quot;Change from monthly average shown in blue
+and calculated between 2016-2019&quot;,
+    caption = &quot;Source: TfL, London Data Store&quot;,
+    x = &quot;&quot;,
+    y = &quot;Bike rentals&quot;) +
+  NULL</code></pre>
+<p><img src="/bikes/bikes_files/figure-html/montly%20change%20in%20bikes%20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The second one looks at percentage changes from the expected level of weekly rentals. The two grey shaded rectangles correspond to Q2 (weeks 14-26) and Q4 (weeks 40-52).</p>
+<pre class="r"><code># Calculate weekly bike change average
+weekly_expected_rentals &lt;- bike %&gt;% 
+  filter(year %in% c(2016,2017,2018,2019)) %&gt;%  
+  group_by(week) %&gt;% 
+  summarize(expected_rentals=mean(bikes_hired))
+
+# Calculate actual weekly bike change average
+weekly_actual_rentals &lt;- bike %&gt;% 
+  filter(year %in% c(2016,2017,2018,2019,2020,2021)) %&gt;%  
+  group_by(year, week) %&gt;% 
+  summarize(actual_rentals=mean(bikes_hired))
+
+df1 &lt;- inner_join(weekly_expected_rentals, weekly_actual_rentals) %&gt;% 
+  #calculating the percentage change
+  mutate(change = 100 * (actual_rentals - expected_rentals) / expected_rentals, 
+         #calculating up and down values for easier plotting
+         up = case_when(change &gt; 0 
+                        ~ change, 
+                        change &lt;= 0 
+                        ~ 0), 
+         down = case_when(change &gt; 0 
+                        ~ 0, 
+                        change &lt;= 0 
+                        ~ change), 
+         type = case_when(down == 0 ~ &quot;up&quot;,
+                          up == 0 ~ &quot;down&quot;))
+
+# Create the graph
+ggplot(df1[1:292,], aes(week, change, group=1)) +
+  
+  #Create gray background
+  geom_rect(aes(xmin=13,xmax=26),
+            ymin=-Inf,ymax=Inf, fill=&quot;#E5E7E9&quot;, alpha=0.035) +
+  geom_rect(aes(xmin=39,xmax=53),
+            ymin=-Inf,ymax=Inf, fill=&quot;#E5E7E9&quot;, alpha=0.035) +
+  geom_line() +
+  
+  #Create filling between graph 
+  geom_ribbon(aes(ymin=0,ymax=up),fill=&quot;#7DCD85&quot;,alpha=0.4) +
+  geom_ribbon(aes(ymin=0,ymax=down),fill=&quot;#CB454A&quot;,alpha=0.4) +
+  
+  #Create tickmarks at the side and set their color 
+  geom_rug(aes(color=type), sides = &quot;b&quot;, 
+           length = unit(0.04, &quot;npc&quot;), show.legend = FALSE) +
+  scale_color_manual(values = c(&quot;#CB454A&quot;, &quot;#7DCD85&quot;))+
+  
+  #Facet, change theme and set scale 
+  facet_wrap(~year) +
+  theme_minimal() + 
+  scale_y_continuous(labels = c(&quot;-50%&quot;,&quot;0%&quot;,&quot;50%&quot;,&quot;100%&quot;)) +
+  scale_x_continuous(breaks = c(13,26,39,53), 
+                   labels = c(&quot;13&quot;,&quot;26&quot;,&quot;39&quot;,&quot;53&quot;)) +
+  
+  #Label graph 
+  labs(
+    title = &quot;Weekly changes in TfL bike rentals&quot;,
+    subtitle = &quot;%change from weekly averages 
+calculated between 2016-2019&quot;,
+    caption = &quot;Source: TfL, London Data Store&quot;,
+    x = &quot;week&quot;,
+    y = &quot;&quot;) +
+  NULL</code></pre>
+<p><img src="/bikes/bikes_files/figure-html/weekly%20change%20in%20bikes-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>For both of these graphs, you have to calculate the expected number of rentals per week or month between 2016-2019 and then, see how each week/month of 2020-2021 compares to the expected rentals. Think of the calculation <code>excess_rentals = actual_rentals - expected_rentals</code>.</p>
+<p>Should you use the mean or the median to calculate your expected rentals? Why?</p>
+<p>We used mean to calculate expected rentals since it incorporates the outliers well without shifting the expectation
+too much in either direction. Outliers are rare (for example when the tube broke down) but they do have the probability to occur again and hence the mean is a better option in this case to calculate expected rentals.</p>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://github.com/jelenaSavic2404" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/jelena-savic-39a5871a9/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Company Name</li>
+                
+                <li>Design:  <a href="https://www.html5up.net">HTML5 UP</a></li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="https://jelena-savic-portfolio.netlify.app/js/jquery.min.js"></script>
+    <script src="https://jelena-savic-portfolio.netlify.app/js/jquery.scrolly.min.js"></script>
+    <script src="https://jelena-savic-portfolio.netlify.app/js/jquery.scrollex.min.js"></script>
+    <script src="https://jelena-savic-portfolio.netlify.app/js/skel.min.js"></script>
+    <script src="https://jelena-savic-portfolio.netlify.app/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="https://jelena-savic-portfolio.netlify.app/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

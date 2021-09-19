@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bikes on Portfolio website for Jelena Savic</title>
+    <link>https://jelena-savic-portfolio.netlify.app/bikes/</link>
+    <description>Recent content in Bikes on Portfolio website for Jelena Savic</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 19 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jelena-savic-portfolio.netlify.app/bikes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Changes in bike hiring - TfL</title>
+      <link>https://jelena-savic-portfolio.netlify.app/bikes/bikes/</link>
+      <pubDate>Sun, 19 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jelena-savic-portfolio.netlify.app/bikes/bikes/</guid>
+      <description>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following
+url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot;# Download TFL data to temporary filehttr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2021-08-23T14%3A32%3A29/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20210919%2Feu-west-1%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20210919T173839Z&amp;amp;X-Amz-Expires=300&amp;amp;X-Amz-Signature=39d12cb12a7909783dfb20b4874b6d37e88dc9408109017ff6453596a88af5b7&amp;amp;X-Amz-SignedHeaders=host]## Date: 2021-09-19 17:42## Status: 200## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet## Size: 173 kB## &amp;lt;ON DISK&amp;gt; C:\Users\JELENA~1.SAV\AppData\Local\Temp\Rtmpg9LRPq\file3818f9e494d.xlsx# Use read_excel to read it as dataframebike0 &amp;lt;- read_excel(bike.</description>
+    </item>
+    
+  </channel>
+</rss>
